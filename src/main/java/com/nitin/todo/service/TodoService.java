@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TodoService {
 
     private final TodoDao todoDao;
+
     @Autowired
     public TodoService(@Qualifier("fakeDao") TodoDao todoDao) {
         this.todoDao = todoDao;
@@ -21,7 +24,19 @@ public class TodoService {
         return todoDao.createTodo(todo);
     }
 
-    public List<Todo> getAllTodos(){
+    public List<Todo> getAllTodos() {
         return todoDao.getAllTodos();
+    }
+
+    public Optional<Todo> getTodoById(UUID id){
+        return todoDao.getTodoById(id);
+    }
+
+    public int updateTodoById(UUID id, Todo todo) {
+        return todoDao.updateTodoById(id, todo);
+    }
+
+    public int deleteTodoById(UUID id){
+        return todoDao.deleteTodoById(id);
     }
 }

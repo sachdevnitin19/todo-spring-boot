@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("api/v1/todo")
 @RestController
@@ -25,5 +26,20 @@ public class TodoController {
     @GetMapping
     public List<Todo> getAllTodos() {
         return todoService.getAllTodos();
+    }
+
+    @GetMapping(path = "{id}")
+    public Todo getAllTodoById(@PathVariable("id") UUID id) {
+        return todoService.getTodoById(id).orElse(null);
+    }
+
+    @PatchMapping
+    public int updateTodoById(@RequestParam UUID id, @RequestBody Todo todo) {
+        return todoService.updateTodoById(id, todo);
+    }
+
+    @DeleteMapping
+    public int deleteTodoById(@RequestParam UUID id) {
+        return todoService.deleteTodoById(id);
     }
 }
