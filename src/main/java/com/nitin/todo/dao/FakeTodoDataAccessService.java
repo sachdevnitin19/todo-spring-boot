@@ -14,7 +14,8 @@ public class FakeTodoDataAccessService implements TodoDao {
 
     @Override
     public int createTodo(UUID id, Todo todo) {
-        DB.add(new Todo(id, todo.getTitle(), todo.getDescription()));
+        Todo newTodo=new Todo(id, todo.getTitle(), todo.getDescription());
+        DB.add(newTodo);
         return 1;
     }
 
