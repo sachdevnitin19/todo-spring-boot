@@ -2,18 +2,16 @@ package com.nitin.todo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Table(name = "todo")
 public class Todo {
     @Id
+    @GeneratedValue
     @Column(name = "id")
-    private UUID id;
+    private long id;
 
     @Column(name = "title")
     private String Title;
@@ -25,13 +23,12 @@ public class Todo {
 
     }
 
-    public Todo(@JsonProperty("id") UUID id, @JsonProperty("title") String title, @JsonProperty("description") String description) {
-        this.id = id;
+    public Todo(@JsonProperty("title") String title, @JsonProperty("description") String description) {
         this.Title = title;
         this.Description = description;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
@@ -41,6 +38,14 @@ public class Todo {
 
     public String getDescription() {
         return Description;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 
     @Override

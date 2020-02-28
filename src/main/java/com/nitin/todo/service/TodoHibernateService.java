@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 @Service
 public class TodoHibernateService {
@@ -19,8 +19,7 @@ public class TodoHibernateService {
     }
 
     public int createTodo(Todo todo) {
-        UUID id = UUID.randomUUID();
-        this.todoHibernateDao.save(new Todo(id, todo.getTitle(), todo.getDescription()));
+        this.todoHibernateDao.save(new Todo(todo.getTitle(), todo.getDescription()));
         return 0;
     }
 
@@ -29,9 +28,26 @@ public class TodoHibernateService {
         return todoList;
     }
 
-    public Optional<Todo> getTodoById(UUID id) {
+    public Optional<Todo> getTodoById(long id) {
         Optional<Todo> todo = todoHibernateDao.findById(id);
-        System.out.println(todo.toString());
         return todo;
     }
+
+    public int updateTodoById(long id, Todo updatedTodo)throws Error {
+        Todo todoToUpdate = todoHibernateDao.findById(id).get();
+        if (todoToUpdate == null) {
+            throw new Error("Todo not found");
+        }
+
+        todoToUpdate.setTitle(updatedTodo.getTitle());
+        todoToUpdate.setDescription(updatedTodo.getDescription());
+        todoHibernateDao.save(todoToUpdate);
+        return 0;
+    }
+
+    public int deleteTodoById(long id){
+        todoHibernateDao.deleteById(id);
+        return 0;
+    }
+
 }
