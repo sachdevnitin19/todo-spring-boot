@@ -1,8 +1,11 @@
 package com.nitin.todo.dao;
 
 import com.nitin.todo.model.Todo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +13,18 @@ import java.util.UUID;
 
 @Repository("fakeDao")
 public class FakeTodoDataAccessService implements TodoDao {
-    private static List<Todo> DB = new ArrayList<Todo>();
+    private static List<Todo> DB = new ArrayList<>();
+
+    @PostConstruct
+    public void afterCreating(){
+
+        System.out.println("'fakedao' created");
+    }
+
+    @PreDestroy
+    public void beforeDestroying(){
+        System.out.println("'fakedao' destroyed");
+    }
 
     @Override
     public int createTodo(UUID id, Todo todo) {
