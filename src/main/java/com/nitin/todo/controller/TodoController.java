@@ -8,8 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @RequestMapping("api/v1/todo")
 @RestController
@@ -32,25 +33,34 @@ public class TodoController {
     }
 
     @GetMapping(path = "{id}")
-    public Todo getAllTodoById(@PathVariable("id") long id) {
+    public Todo getAllTodoById(@PathVariable("id") UUID id) {
         return todoService.getTodoById(id).orElse(null);
     }
 
     @PutMapping
-    public ResponseEntity updateTodoById(@RequestParam long id, @RequestBody Todo todo) {
+    public ResponseEntity updateTodoById(@RequestParam UUID id, @RequestBody Todo todo) {
         try {
             todoService.updateTodoById(id, todo);
+            return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             HttpHeaders header = new HttpHeaders();
             header.set("Content-Type", "application/json");
             return new ResponseEntity("{\"status\":false}", header, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public int deleteTodoById(@RequestParam long id) {
-        return todoService.deleteTodoById(id);
+    public ResponseEntity deleteTodoById(@RequestParam UUID id) {
+        try {
+            todoService.deleteTodoById(id);
+            return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            System.out.println(e);
+            HttpHeaders header = new HttpHeaders();
+            header.set("Content-Type", "application/json");
+            return new ResponseEntity("{\"status\":false}", header, HttpStatus.NOT_FOUND);
+        }
+
     }
 }

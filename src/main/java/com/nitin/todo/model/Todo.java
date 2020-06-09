@@ -10,8 +10,8 @@ import java.util.UUID;
 public class Todo {
     @Id
     @GeneratedValue
-    @Column(name = "id")
-    private long id;
+    @Column(name = "id", columnDefinition = "binary(16)")
+    private UUID id;
 
     @Column(name = "title")
     private String Title;
@@ -28,7 +28,7 @@ public class Todo {
         this.Description = description;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
