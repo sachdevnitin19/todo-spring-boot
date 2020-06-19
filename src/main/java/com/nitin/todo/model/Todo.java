@@ -9,23 +9,24 @@ import java.util.UUID;
 @Table(name = "todo")
 public class Todo {
     @Id
-    @GeneratedValue
+    @GeneratedValue//automatically increments the column value
+    //need to define uuid as binary(16) else default it gets defined as binary 255 and findById doesnt work
     @Column(name = "id", columnDefinition = "binary(16)")
     private UUID id;
 
     @Column(name = "title")
-    private String Title;
+    private String title;
 
     @Column(name = "description")
-    private String Description;
+    private String description;
 
     public Todo() {
 
     }
 
     public Todo(@JsonProperty("title") String title, @JsonProperty("description") String description) {
-        this.Title = title;
-        this.Description = description;
+        this.title = title;
+        this.description = description;
     }
 
     public UUID getId() {
@@ -33,27 +34,27 @@ public class Todo {
     }
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        title = title;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        description = description;
     }
 
     @Override
     public String toString() {
         return "Todo{" +
                 "id=" + id +
-                ", Title='" + Title + '\'' +
-                ", Description='" + Description + '\'' +
+                ", Title='" + title + '\'' +
+                ", Description='" + description + '\'' +
                 '}';
     }
 }

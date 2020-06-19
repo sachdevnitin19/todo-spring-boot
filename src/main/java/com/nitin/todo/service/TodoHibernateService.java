@@ -18,8 +18,8 @@ public class TodoHibernateService {
         this.todoHibernateDao = todoDao;
     }
 
-    public int createTodo(Todo todo) {
-        this.todoHibernateDao.save(new Todo(todo.getTitle(), todo.getDescription()));
+    public int createTodo(Todo todoObj) {
+        this.todoHibernateDao.save(new Todo(todoObj.getTitle(), todoObj.getDescription()));
         return 0;
     }
 
@@ -36,6 +36,10 @@ public class TodoHibernateService {
 
     public Optional<Todo> getTodoById(UUID id) {
         return todoHibernateDao.findById(id);
+    }
+
+    public List<Todo> searchTodoByTitle(String title) {
+        return todoHibernateDao.searchByTitle(title);
     }
 
     public int updateTodoById(UUID id, Todo updatedTodo) throws Exception {

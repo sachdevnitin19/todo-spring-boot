@@ -1,5 +1,8 @@
 package com.nitin.todo.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nitin.todo.model.Todo;
 import com.nitin.todo.service.TodoHibernateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +25,11 @@ public class TodoController {
         this.todoService = todoHibernateService;
     }
 
-    @PostMapping
-    public void createTodo(@RequestBody Todo todo) {
+    @PostMapping()
+    public ResponseEntity createTodo(@RequestBody Todo todo){
+        System.out.println(todo);
         todoService.createTodo(todo);
+        return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
     }
 
     @GetMapping
@@ -32,9 +37,15 @@ public class TodoController {
         return todoService.getAllTodos();
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping("{id}")
     public Todo getAllTodoById(@PathVariable("id") UUID id) {
+
         return todoService.getTodoById(id).orElse(null);
+    }
+
+    @GetMapping("/searchByTitle")
+    public List<Todo> searchTodoByTitle(@RequestParam String title) {
+        return todoService.searchTodoByTitle(title);
     }
 
     @PutMapping
