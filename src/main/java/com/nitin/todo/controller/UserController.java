@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @RequestMapping("api/v1/user")
@@ -23,9 +23,20 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity createUser(@RequestBody User user){
+    public ResponseEntity createUser(@RequestBody User user) {
         System.out.println(user);
         this.userService.createNewUser(user);
         return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity getUsers() {
+        return new ResponseEntity(this.userService.getUsers(), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteUser(@PathVariable("id") UUID id){
+        this.userService.deleteUserById(id);
+        return new ResponseEntity("", new HttpHeaders(), HttpStatus.OK);
     }
 }

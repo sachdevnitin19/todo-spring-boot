@@ -19,23 +19,27 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_todo")
     private Todo userTodo;
 
     public User() {
 
     }
-
-    public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
-        this.name = name;
-        this.email = email;
-    }
+    //do not create another constructor with @JsonProperty, it will throw error not accepting json
+//    public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
+//        this.name = name;
+//        this.email = email;
+//    }
 
     public User(@JsonProperty("name") String name, @JsonProperty("email") String email, @JsonProperty("todo") Todo todo) {
         this.name = name;
         this.email = email;
         this.userTodo = todo;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
