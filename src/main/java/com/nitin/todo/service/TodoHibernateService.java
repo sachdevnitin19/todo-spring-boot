@@ -1,8 +1,10 @@
 package com.nitin.todo.service;
 
 import com.nitin.todo.dao.TodoHibernateDao;
+import com.nitin.todo.dao.UserDao;
 import com.nitin.todo.model.Todo;
 
+import com.nitin.todo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +14,20 @@ import java.util.*;
 @Service
 public class TodoHibernateService {
     TodoHibernateDao todoHibernateDao;
-
+    UserDao userDao;
     @Autowired
-    public TodoHibernateService(TodoHibernateDao todoDao) {
+    public TodoHibernateService(TodoHibernateDao todoDao, UserDao userDao) {
         this.todoHibernateDao = todoDao;
+        this.userDao=userDao;
     }
 
-    public int createTodo(Todo todoObj) {
-        this.todoHibernateDao.save(new Todo(todoObj.getTitle(), todoObj.getDescription()));
+    public int createTodo(UUID userId, Todo todoObj) {
+        Optional<User> user=this.userDao.findById(userId);
+        if (user.isPresent()) {
+            Todo todoToSave=new Todo(todoObj.getTitle(), todoObj.getDescription());
+            todoToSave.setUser(user.get());
+            this.todoHibernateDao.save(todoToSave);
+        }
         return 0;
     }
 

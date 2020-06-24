@@ -1,8 +1,10 @@
 package com.nitin.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,23 +21,19 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToOne
-    @JoinColumn(name = "user_todo")
-    private Todo userTodo;
+    //    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Todo> todos;
+
 
     public User() {
 
     }
-    //do not create another constructor with @JsonProperty, it will throw error not accepting json
-//    public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
-//        this.name = name;
-//        this.email = email;
-//    }
 
-    public User(@JsonProperty("name") String name, @JsonProperty("email") String email, @JsonProperty("todo") Todo todo) {
+    public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
         this.name = name;
         this.email = email;
-        this.userTodo = todo;
+
     }
 
     public UUID getId() {
@@ -60,12 +58,12 @@ public class User {
     }
 
 
-    public Todo getTodo() {
-        return userTodo;
+    public List<Todo> getTodos() {
+        return todos;
     }
 
-    public void setTodo(Todo todo) {
-        this.userTodo = todo;
+    public void setTodos(List<Todo> todos) {
+        this.todos = todos;
     }
 
     @Override
@@ -74,7 +72,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", todo=" + userTodo +
+//                ", todos=" + todos +
                 '}';
     }
 }

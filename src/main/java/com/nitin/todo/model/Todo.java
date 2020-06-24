@@ -1,5 +1,6 @@
 package com.nitin.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -20,11 +21,18 @@ public class Todo {
     @Column(name = "description")
     private String description;
 
+
     //causes infinite loop-> while get this class it loads user then again user loads this class and so on
     //adds bidirectional one-to-one mapping without adding FKey in db
     //mappedBy value should be eq to this class variable value in user class
     //    @OneToOne(mappedBy = "userTodo", cascade = CascadeType.ALL)
     //    private User user;
+
+    //even though below annotation doesnt return  infinite nested data but hibernate continues to attach entities nested and hence it takes a lot of time.
+    //@JsonIgnoreProperties("todos")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Todo() {
 
@@ -55,13 +63,13 @@ public class Todo {
         description = description;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public String toString() {

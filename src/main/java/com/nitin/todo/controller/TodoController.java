@@ -25,10 +25,10 @@ public class TodoController {
         this.todoService = todoHibernateService;
     }
 
-    @PostMapping()
-    public ResponseEntity createTodo(@RequestBody Todo todo){
+    @PostMapping("{userId}")
+    public ResponseEntity createTodo(@PathVariable UUID userId, @RequestBody Todo todo) {
         System.out.println(todo);
-        todoService.createTodo(todo);
+        todoService.createTodo(userId,todo);
         return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
     }
 

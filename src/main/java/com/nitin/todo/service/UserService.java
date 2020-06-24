@@ -18,22 +18,19 @@ public class UserService {
     @Autowired
     public UserService(UserDao userDao, TodoHibernateDao todoDao) {
         this.userDao = userDao;
-        this.todoDao=todoDao;
+        this.todoDao = todoDao;
     }
 
     public boolean createNewUser(User user) {
-        Todo reqTodo=user.getTodo();
-        Todo userTodo=new Todo(reqTodo.getTitle(),reqTodo.getDescription());
-        this.todoDao.save(userTodo);
-        this.userDao.save(new User(user.getName(), user.getEmail(), userTodo));
+        this.userDao.save(new User(user.getName(), user.getEmail()));
         return true;
     }
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return this.userDao.findAll();
     }
 
-    public void deleteUserById(UUID id){
+    public void deleteUserById(UUID id) {
         this.userDao.deleteById(id);
     }
 }
