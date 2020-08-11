@@ -28,7 +28,7 @@ public class TodoController {
     @PostMapping("{userId}")
     public ResponseEntity createTodo(@PathVariable UUID userId, @RequestBody Todo todo) {
         System.out.println(todo);
-        todoService.createTodo(userId,todo);
+        todoService.createTodo(userId, todo);
         return new ResponseEntity("Ok", new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -37,10 +37,10 @@ public class TodoController {
         return todoService.getAllTodos();
     }
 
-    @GetMapping("{id}")
-    public Todo getAllTodoById(@PathVariable("id") UUID id) {
+    @GetMapping("{userId}")
+    public List<Todo.TodoProjection> getAllTodoByUserId(@PathVariable("userId") UUID userId) {
 
-        return todoService.getTodoById(id).orElse(null);
+        return todoService.getAllTodoByUserId(userId);
     }
 
     @GetMapping("/searchByTitle")

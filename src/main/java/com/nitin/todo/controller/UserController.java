@@ -34,8 +34,13 @@ public class UserController {
         return new ResponseEntity(this.userService.getUsers(), new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("{userId}")
+    public User findUserById(@PathVariable("userId") UUID userId) {
+        return this.userService.findUserById(userId);
+    }
+
     @DeleteMapping("{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") UUID id){
+    public ResponseEntity deleteUser(@PathVariable("id") UUID id) {
         this.userService.deleteUserById(id);
         return new ResponseEntity("", new HttpHeaders(), HttpStatus.OK);
     }

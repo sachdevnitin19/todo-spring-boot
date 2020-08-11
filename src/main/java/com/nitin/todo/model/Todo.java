@@ -21,18 +21,15 @@ public class Todo {
     @Column(name = "description")
     private String description;
 
-
-    //causes infinite loop-> while get this class it loads user then again user loads this class and so on
-    //adds bidirectional one-to-one mapping without adding FKey in db
-    //mappedBy value should be eq to this class variable value in user class
-    //    @OneToOne(mappedBy = "userTodo", cascade = CascadeType.ALL)
-    //    private User user;
-
     //even though below annotation doesnt return  infinite nested data but hibernate continues to attach entities nested and hence it takes a lot of time.
-    //@JsonIgnoreProperties("todos")
+    @JsonIgnoreProperties("todos")
+    //bidirectional relation
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
+//    @JsonBackReference
     private User user;
+
+
 
     public Todo() {
 
@@ -56,11 +53,11 @@ public class Todo {
     }
 
     public void setTitle(String title) {
-        title = title;
+        this.title = title;
     }
 
     public void setDescription(String description) {
-        description = description;
+        this.description = description;
     }
 
     public User getUser() {
@@ -78,5 +75,14 @@ public class Todo {
                 ", Title='" + title + '\'' +
                 ", Description='" + description + '\'' +
                 '}';
+    }
+
+
+    public interface TodoProjection {
+        UUID getId();
+
+        String getTitle();
+
+        String getDescription();
     }
 }

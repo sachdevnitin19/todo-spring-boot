@@ -20,9 +20,10 @@ public class User {
 
     @Column(name = "email")
     private String email;
-
-    //    @JsonIgnoreProperties("user")
+    //bidirectional relation
+    @JsonIgnoreProperties("user")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @JsonManagedReference
     private List<Todo> todos;
 
 
@@ -58,9 +59,9 @@ public class User {
     }
 
 
-    public List<Todo> getTodos() {
-        return todos;
-    }
+//    public List<Todo> getTodos() {
+//        return todos;
+//    }
 
     public void setTodos(List<Todo> todos) {
         this.todos = todos;
@@ -74,5 +75,13 @@ public class User {
                 ", email='" + email + '\'' +
 //                ", todos=" + todos +
                 '}';
+    }
+
+    public interface UserProjection {
+        UUID getId();
+
+        String getName();
+
+        String getEmail();
     }
 }

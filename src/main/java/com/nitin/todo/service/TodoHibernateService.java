@@ -15,16 +15,19 @@ import java.util.*;
 public class TodoHibernateService {
     TodoHibernateDao todoHibernateDao;
     UserDao userDao;
+    UserService userService;
+
     @Autowired
-    public TodoHibernateService(TodoHibernateDao todoDao, UserDao userDao) {
+    public TodoHibernateService(TodoHibernateDao todoDao, UserDao userDao, UserService userService) {
         this.todoHibernateDao = todoDao;
-        this.userDao=userDao;
+        this.userDao = userDao;
+        this.userService = userService;
     }
 
     public int createTodo(UUID userId, Todo todoObj) {
-        Optional<User> user=this.userDao.findById(userId);
+        Optional<User> user = this.userDao.findById(userId);
         if (user.isPresent()) {
-            Todo todoToSave=new Todo(todoObj.getTitle(), todoObj.getDescription());
+            Todo todoToSave = new Todo(todoObj.getTitle(), todoObj.getDescription());
             todoToSave.setUser(user.get());
             this.todoHibernateDao.save(todoToSave);
         }
@@ -32,18 +35,19 @@ public class TodoHibernateService {
     }
 
     public List<Todo> getAllTodos() {
-
-        Iterator<Todo> todoItr = todoHibernateDao.findAll().iterator();
-        List<Todo> todoList = new ArrayList<>();
-        while (todoItr.hasNext())
-            todoList.add(todoItr.next());
-
-        return todoList;
-
+        return todoHibernateDao.findAll();
     }
 
-    public Optional<Todo> getTodoById(UUID id) {
-        return todoHibernateDao.findById(id);
+    public List<Todo.TodoProjection> getAllTodoByUserId(UUID userId) {
+        System.out.println(userId.getClass());
+        System.out.println(userId);
+        User user = this.userService.findUserById(userId);
+        if (user == null) {
+            return null;
+        }
+        System.out.println(user);
+
+        return todoHibernateDao.findAllByUser(user);
     }
 
     public List<Todo> searchTodoByTitle(String title) {

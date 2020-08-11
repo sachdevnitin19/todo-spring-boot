@@ -1,6 +1,7 @@
 package com.nitin.todo.dao;
 
 import com.nitin.todo.model.Todo;
+import com.nitin.todo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,5 +18,9 @@ public interface TodoHibernateDao extends JpaRepository<Todo, UUID> {
     @Query("FROM Todo t WHERE t.title LIKE ?1% ")
     List<Todo> searchByTitle(String title);
 
-//    List<Todo> findByTitleStartingWith( String title);
+    List<Todo.TodoProjection> findAllByUser(User user);
+
+//    @Query("SELECT t.title, t.id, t.description FROM Todo  t WHERE t.user = ?1")
+//    List<Todo> getUserTodos(User user);
+    //List<Todo> findByTitleStartingWith( String title);
 }
