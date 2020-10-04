@@ -18,6 +18,16 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    //unidirectional oneToMany relation can be created over here
+    //example
+    ////unidirectional relation
+    //    @OneToMany(
+    //            cascade = CascadeType.ALL,
+    //            fetch=FetchType.Lazy
+    //    )
+    //    @JoinColumn(name = "user_id") //user_id column will be created in Todo table
+    //    private List<Todo> todos;
+
     public User() {
     }
 

@@ -22,7 +22,7 @@ public class Todo {
     //unidirectional relation
     @ManyToOne(
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-            optional = false
+            optional = false //without user todo cannot be created
     )
     @JoinColumn(name = "user_id")
     private User user;
