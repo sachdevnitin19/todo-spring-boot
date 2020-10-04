@@ -1,8 +1,6 @@
 package com.nitin.todo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -21,18 +19,16 @@ public class Todo {
     @Column(name = "description")
     private String description;
 
-    //even though below annotation doesnt return  infinite nested data but hibernate continues to attach entities nested and hence it takes a lot of time.
-    @JsonIgnoreProperties("todos")
-    //bidirectional relation
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    //unidirectional relation
+    @ManyToOne(
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            optional = false
+    )
     @JoinColumn(name = "user_id")
-//    @JsonBackReference
     private User user;
 
 
-
     public Todo() {
-
     }
 
     public Todo(@JsonProperty("title") String title, @JsonProperty("description") String description) {

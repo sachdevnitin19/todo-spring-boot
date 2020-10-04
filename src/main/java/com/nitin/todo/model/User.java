@@ -1,10 +1,7 @@
 package com.nitin.todo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,21 +17,13 @@ public class User {
 
     @Column(name = "email")
     private String email;
-    //bidirectional relation
-    @JsonIgnoreProperties("user")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JsonManagedReference
-    private List<Todo> todos;
-
 
     public User() {
-
     }
 
     public User(@JsonProperty("name") String name, @JsonProperty("email") String email) {
         this.name = name;
         this.email = email;
-
     }
 
     public UUID getId() {
@@ -58,22 +47,12 @@ public class User {
         this.email = email;
     }
 
-
-//    public List<Todo> getTodos() {
-//        return todos;
-//    }
-
-    public void setTodos(List<Todo> todos) {
-        this.todos = todos;
-    }
-
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-//                ", todos=" + todos +
                 '}';
     }
 
