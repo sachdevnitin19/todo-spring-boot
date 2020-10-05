@@ -1,7 +1,11 @@
 package com.nitin.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +31,18 @@ public class User {
     //    )
     //    @JoinColumn(name = "user_id") //user_id column will be created in Todo table
     //    private List<Todo> todos;
+
+    @JsonIgnoreProperties("users")
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JoinTable(
+            name = "project_user",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> projects;
 
     public User() {
     }
@@ -55,6 +71,17 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void addProject(Project projectToAdd) {
+        if (this.projects == null) {
+            this.projects = new ArrayList<>();
+        }
+        this.projects.add(projectToAdd);
     }
 
     @Override
